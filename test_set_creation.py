@@ -28,6 +28,9 @@ while(set_creation):
     
     elif new_person.lower() == 'y':
         person = input("Who is this? ").lower()
+        if not os.path.exists(f"./TrainingSet/{person}/"):
+            os.makedirs("./TrainingSet/{person}")
+        
         count = int(input(f"How Many Images would you like to take of {person}? "))
         images = 0
         
@@ -35,12 +38,12 @@ while(set_creation):
             ret, frame = cap.read()
             # gray here is the gray frame you will be getting from a camera
             gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            faces = face_cascade.detectMultiScale(gray, 1.3, 8)
             for (x,y,w,h) in faces:
                 print("Face seen")
                 face = frame[y:y+h, x:x+w]
                 face = cv.resize(face, (256,256), interpolation = cv.INTER_LINEAR)
-                cv.imwrite(f"./TrainingSet/{person}_{images}.png", face)
+                cv.imwrite(f"./TrainingSet/{person}/{person}_{images}.png", face)
                 images += 1
             
             #cv.imshow('frame',gray)
